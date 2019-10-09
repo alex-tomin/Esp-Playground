@@ -12,7 +12,7 @@ const uint8_t fingerprint[20] = {0x14, 0xe1, 0x0e, 0x30, 0x31, 0x9b, 0x12, 0xf3,
  
 void setup() {
 
-  Serial.begin(74880);
+  Serial.begin(115200);
   // Serial.setDebugOutput(true);
 
   Serial.println();
@@ -20,8 +20,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);             // Connect to the network
 
-  Serial.print("Connecting to ");
-  Serial.print(ssid); Serial.println(" ...");
+  Serial.printf("Connecting to: %s ...\n", ssid);
 
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) { // Wait for the Wi-Fi to connect
@@ -29,11 +28,8 @@ void setup() {
     Serial.print(++i); Serial.print(' ');
   }
 
-  Serial.println('\n');
-  Serial.println("Connection established!");  
-  Serial.print("IP address:\t");
+  Serial.printf("\n Connection established! IP address:\t ");
   Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
-
 }
 
 void loop() {
@@ -47,7 +43,7 @@ void loop() {
 
     Serial.print("[HTTP] begin...\n");
 
-    String urlBase = "https://putsreq.com/Alex?from=ESP&time=";
+    String urlBase = "https://putsreq.com/Alex?from=ESP&Today=9.Oct_9.50&time=";
     String url = urlBase+ millis();
 
     Serial.print(url);
