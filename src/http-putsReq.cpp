@@ -19,8 +19,6 @@ void putsReq_Write(String message){
 
     Serial.println("[HTTP] begin..." + url);
 
-    return;
-
     if (https.begin(*client, url)) {       
         // start connection and send HTTP header
         int httpCode = https.GET();

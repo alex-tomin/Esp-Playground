@@ -5,6 +5,9 @@
 #include "Wifi-Connect.h"
 #include "http-putsReq.h"
 
+int ledPin = D1;
+int buttonPin = D3;
+
 void setup()
 {
   Serial.begin(115200);
@@ -12,6 +15,9 @@ void setup()
   Serial.println();
 
   wifiConnect_start();
+
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
 }
 
 void loop() {
@@ -21,7 +27,14 @@ void loop() {
         return;
     }
 
-    putsReq_Write("test");
+    delay(500);
 
-    delay(10000);
+    int buttonPressed = digitalRead(buttonPin) == LOW;
+    digitalWrite(ledPin, buttonPressed);
+
+    if(buttonPressed)
+    {
+        Serial.println("Pressed");
+        putsReq_Write("test");
+    }
 }
