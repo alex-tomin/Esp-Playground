@@ -7,9 +7,10 @@
 
 int ledPin = D1;
 int buttonPin = D3;
+bool prevButtonState = false;
+bool perfomOperation = false;
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
   // Serial.setDebugOutput(true);
   Serial.println();
@@ -21,20 +22,24 @@ void setup()
 }
 
 void loop() {
-    // wait for WiFi connection
-    if ((WiFi.status() != WL_CONNECTED)) {
-        delay(10000);
-        return;
-    }
+  // wait for WiFi connection
+  if ((WiFi.status() != WL_CONNECTED)) {
+    delay(10000);
+    return;
+  }
 
-    delay(500);
+  // flip state if button was pressed (changed from 1 -> 0)
+  bool currButtonState = !digitalRead(buttonPin);
+  if (!prevButtonState && currButtonState) {
+    Serial.println("Pressed");
+    perfomOperation = !perfomOperation;
+  }
+  prevButtonState = currButtonState;
+  
+  digitalWrite(ledPin, perfomOperation);
 
-    int buttonPressed = digitalRead(buttonPin) == LOW;
-    digitalWrite(ledPin, buttonPressed);
+  if (perfomOperation && (millis() % 1000)) {
+    putsReq_Write("test");
+  }
 
-    if(buttonPressed)
-    {
-        Serial.println("Pressed");
-        putsReq_Write("test");
-    }
 }
