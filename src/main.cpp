@@ -1,9 +1,10 @@
 // `<` - compiler searches first in pre-defined locations
 
 #include <ESP8266WiFi.h>
-#include <WiFiClientSecureBearSSL.h>
+
 #include "Wifi-Connect.h"
 #include "http-putsReq.h"
+#include "net-mDns.h"
 
 int ledPin = D1;
 int buttonPin = D3;
@@ -16,23 +17,20 @@ void setup() {
   Serial.println();
 
   wifiConnect_start();
+  mDns_Setup();
 
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
 }
 
 void loop() {
-  // wait for WiFi connection
-  if ((WiFi.status() != WL_CONNECTED)) {
-    delay(10000);
-    return;
-  }
+  wifiConnect_loop();
 
-  // flip state if button was pressed (changed from 1 -> 0)
+  // flip state if button was pressed (changed from 0 -> 1)
   bool currButtonState = !digitalRead(buttonPin);
   if (!prevButtonState && currButtonState) {
-    Serial.println("Pressed");
     perfomOperation = !perfomOperation;
+    Serial.printf("Perform Operation: %s\n", perfomOperation ?  "true" : "false");
   }
   prevButtonState = currButtonState;
   
@@ -41,5 +39,4 @@ void loop() {
   if (perfomOperation && (millis() % 1000)) {
     putsReq_Write("test");
   }
-
 }
