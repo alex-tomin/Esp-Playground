@@ -22,16 +22,12 @@ void wifiConnect_loop() {
   
   // wait for WiFi connection
   if ((WiFi.status() != WL_CONNECTED)) {
+    Serial.println("Wifi not connected, will wait 10 sec...");
     delay(10000);
-    return;
   }
   
   // flip state if button was pressed (changed from 0 -> 1)
   bool currButtonState = !digitalRead(resetButtonPin);
-
-  Serial.printf("curr button: %s\n", currButtonState ?  "true" : "false");
-  delay(1000);
-
   if (!prevResetButtonState && currButtonState) {
     Serial.println("Reset Buton Pressed");
 
