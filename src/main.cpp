@@ -2,26 +2,22 @@
 #include "Modules\MDnsModule.h"
 #include "PutsReqModule.h"
 
-const int ModulesCount = 3;
-BaseModule *modules[ModulesCount];  //TODO: list?
-WifiConnectModule wifiConnect;
-MDnsModule mDnsModule;
-PutsReqModule putsReqModule;
+std::array<BaseModule*, 3> modules{
+    new WifiConnectModule(),
+    new MDnsModule(),
+    new PutsReqModule(),
+};
 
 void setup() {
-  modules[0] = &wifiConnect;
-  modules[1] = &mDnsModule;
-  modules[2] = &putsReqModule;
+    Serial.begin(115200);
 
-  Serial.begin(115200);
-
-  for (int i = 0; i < ModulesCount; i++) {
-      modules[i]->setup();
+    for (BaseModule* module : modules) {
+        module->setup();
   }
 }
 
 void loop() {
-    for (int i = 0; i < ModulesCount; i++) {
-        modules[i]->loop();
+    for (BaseModule* module : modules) {
+        module->loop();
     }
 }

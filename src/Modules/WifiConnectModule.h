@@ -10,25 +10,19 @@
 #include <ESP8266WiFi.h>
 #include "BaseModule.h"
 
+// launches wifi AP mode if no safed config or when D5 button is pressed
 class WifiConnectModule: public BaseModule {
    
-    int resetButtonPin = D5;
-    bool prevResetButtonState = false;
+    int resetButtonPin = D5;    //TODO: configure button
+    bool prevResetButtonState = false;  //TODO: button management
     WiFiManager wifiManager;
-
-    void wifiConnect_autoConnect() {
-        wifiManager.autoConnect("Sashko_Esp");
-
-        Serial.printf("\n Connection established! IP address:\t ");
-        Serial.println(WiFi.localIP());  // Send the IP address of the ESP8266 to the computer
-    }
 
    public:
     WifiConnectModule(){}
 
     void setup() {
         pinMode(resetButtonPin, INPUT_PULLUP);
-        wifiConnect_autoConnect();
+        autoConnect();
     }
 
     void loop() {
@@ -45,9 +39,17 @@ class WifiConnectModule: public BaseModule {
 
             wifiManager.resetSettings();
             delay(1000);
-            wifiConnect_autoConnect();
+            autoConnect();
         }
         prevResetButtonState = currButtonState;
+    }
+
+   private:
+    void autoConnect() {
+        wifiManager.autoConnect();
+
+        Serial.printf("\n Connection established! IP address:\t ");
+        Serial.println(WiFi.localIP()); 
     }
 };
 
