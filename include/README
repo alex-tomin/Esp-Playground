@@ -1,5 +1,7 @@
 
-This directory is intended for project header files.
+Header files. For External contract only 
+
+https://medium.com/heuristics/c-application-development-part-1-project-structure-454b00f9eddc
 
 A header file is a file containing C declarations and macro definitions
 to be shared between several project source files. You request the use of a
