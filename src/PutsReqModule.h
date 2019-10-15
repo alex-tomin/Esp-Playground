@@ -5,11 +5,13 @@
 #include <WiFiClient.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <DhtReader.h>
 #include "Modules\BaseModule.h"
 
 class PutsReqModule : public BaseModule  {
     
     const uint8_t fingerprint[20] = {0x14, 0xe1, 0x0e, 0x30, 0x31, 0x9b, 0x12, 0xf3, 0xa0, 0x91, 0xe3, 0x61, 0xf2, 0x32, 0x39, 0x2a, 0xf2, 0xc6, 0x31, 0x33};
+    DhtReader dhtReader;
 
     int ledPin = D1;
     int buttonPin = D3;
@@ -18,7 +20,9 @@ class PutsReqModule : public BaseModule  {
     bool perfomOperation = false;
 
    public:
-    PutsReqModule() {}
+    PutsReqModule(DhtReader dht) {
+        dhtReader = dht;
+    }
 
     void setup() {
         pinMode(ledPin, OUTPUT);
@@ -39,8 +43,11 @@ class PutsReqModule : public BaseModule  {
 
         digitalWrite(ledPin, perfomOperation);
 
-        if (perfomOperation && (millis() % 1000)) {
-            SendReq("test");
+        if (perfomOperation && (millis() % 2000)) {
+
+            float temp = dhtReader.readTemperature();
+            String message = "temperature:" + String(temp);
+            SendReq(message);
         }
     }
 

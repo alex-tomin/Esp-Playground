@@ -2,11 +2,14 @@
 #include "Modules\MDnsModule.h"
 #include "PutsReqModule.h"
 #include "WebServer.h"
+#include "DhtReader.h"
+
+DhtReader dhtReader;
 
 std::array<BaseModule*, 4> modules{
     new WifiConnectModule(),
     new MDnsModule(),
-    new PutsReqModule(),
+    new PutsReqModule(dhtReader),
     new WebServer()
 };
 
