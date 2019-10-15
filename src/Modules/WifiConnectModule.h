@@ -2,12 +2,10 @@
 #define WIFI_CONNECT_MODULE
 
 // `<..>` - compiler searches in pre-defined locations first
-#include <Arduino.h>
-#include <WiFiClient.h>
-#include <DNSServer.h>
-#include <WiFiManager.h>
-#include <ESP8266WebServer.h>
 #include <ESP8266WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <ESPAsyncWiFiManager.h>
+
 #include "BaseModule.h"
 
 // launches wifi AP mode if no safed config or when D5 button is pressed
@@ -15,7 +13,6 @@ class WifiConnectModule: public BaseModule {
    
     int resetButtonPin = D5;    //TODO: configure button
     bool prevResetButtonState = false;  //TODO: button management
-    WiFiManager wifiManager;
 
    public:
     WifiConnectModule(){}
@@ -35,17 +32,21 @@ class WifiConnectModule: public BaseModule {
         // flip state if button was pressed (changed from 0 -> 1)
         bool currButtonState = !digitalRead(resetButtonPin);
         if (!prevResetButtonState && currButtonState) {
-            Serial.println("Reset Buton Pressed");
-
-            wifiManager.resetSettings();
+            Serial.println("Reset Buton Pressed - WiFi settings to be invalidated");
+            WiFi.disconnect(true);
             delay(1000);
-            autoConnect();
+            //autoConnect();
+            ESP.reset(); //TODO: temp hach not to occupy web server port.
         }
         prevResetButtonState = currButtonState;
     }
 
    private:
     void autoConnect() {
+        AsyncWebServer server(80);
+        DNSServer dns;
+        AsyncWiFiManager wifiManager(&server, &dns);
+
         wifiManager.autoConnect();
 
         Serial.printf("\n Connection established! IP address:\t ");

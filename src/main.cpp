@@ -1,11 +1,13 @@
 #include "Modules\WifiConnectModule.h"
 #include "Modules\MDnsModule.h"
 #include "PutsReqModule.h"
+#include "WebServer.h"
 
-std::array<BaseModule*, 3> modules{
+std::array<BaseModule*, 4> modules{
     new WifiConnectModule(),
     new MDnsModule(),
     new PutsReqModule(),
+    new WebServer()
 };
 
 void setup() {
