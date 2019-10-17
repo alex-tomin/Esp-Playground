@@ -7,14 +7,14 @@
 #include <ESPAsyncWebServer.h>
 #include "Modules\BaseModule.h"
 
-AsyncWebServer server(80); //TODO: move inside class
-
 class WebServer : public BaseModule  {
 
     //DhtReader dhtReader;
 
+    AsyncWebServer server;
+
    public:
-    WebServer() {
+    WebServer() : server(80) {
         //dhtReader = dht;
     }
 

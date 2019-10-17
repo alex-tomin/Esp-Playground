@@ -6,10 +6,10 @@
 
 DhtReader dhtReader;
 
-std::array<BaseModule*, 4> modules{
+std::array<BaseModule*, 3> modules{
     new WifiConnectModule(),
-    new MDnsModule(),
     new PutsReqModule(dhtReader),
+    //new MDnsModule(),
     new WebServer()
 };
 
