@@ -1,5 +1,6 @@
-#include "Modules\WifiConnectModule.h"
-#include "Modules\MDnsModule.h"
+#include "IntellisenseClang.h"
+#include "Modules/WifiConnectModule.h"
+#include "Modules/MDnsModule.h"
 #include "PutsReqModule.h"
 #include "WebServer.h"
 #include "DhtReader.h"
