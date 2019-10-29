@@ -2,7 +2,6 @@
 #define DHT_READER
 
 #include <Adafruit_Sensor.h>
-#include <DHT.h>
 #include <DHT_U.h>
 
 #define DHTTYPE DHT11   
